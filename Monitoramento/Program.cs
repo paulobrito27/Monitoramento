@@ -15,16 +15,14 @@ namespace Monitoramento
             Parametros.CaracterPessoaInfectada = " # ";
             Parametros.CaracterPessoaSaudavel = " - ";
             Parametros.TempoDeMonitoramento = 60;
-            List<Infectado> lista = new List<Infectado>();
+            
 
-
+            List<(int, int)> lista2 = new List<(int, int)>();
 
             var valores = Parametros.Questionario();
             Calculo calculo = new Calculo(valores.Item1, valores.Item2);
 
-
             Console.Clear();
-
 
             for (int i = 1; i <= calculo.QuantidadeEstados; i++)
             {
@@ -37,14 +35,14 @@ namespace Monitoramento
                 Console.WriteLine();
             }
 
-
             for (int k = 1; k <= Parametros.TempoDeMonitoramento; k++)
             {
                 Thread.Sleep(1000);
                 Console.Clear();
                 
                 var infectado = calculo.RetornaInfectado();
-                lista.Add(new Infectado(infectado.Item1, infectado.Item2));
+                lista2.Add(infectado);
+                
 
                 for (int i = 1; i <= calculo.QuantidadeEstados; i++)
                 {
@@ -53,27 +51,21 @@ namespace Monitoramento
                     Console.Write("Estado " + i + "\t -> ");
                     for (int j = 1; j <= calculo.QuantidadePessoas; j++)
                     {
-                        bool doente = false;
-
-
-                        foreach(var pessoa in lista)
+                        bool saudavel = true;
+                        foreach (var pessoa in lista2)
                         {
-                            if(pessoa.Linha == i && pessoa.Posicao == j)
+                            if(pessoa.Item1 == i && pessoa.Item2 == j)
                             {
-                                doente = true;
-                            }
+                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                Console.Write(Parametros.CaracterPessoaInfectada);
+                                saudavel = false;
+                            }   
                         }
-                        if (doente)
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.Write(Parametros.CaracterPessoaInfectada);
-                        }
-                        else
+                        if (saudavel)
                         {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.Write(Parametros.CaracterPessoaSaudavel);
                         }
-
                     }
                     Console.WriteLine();
                 }

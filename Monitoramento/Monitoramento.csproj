@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Calculo.cs" />
-    <Compile Include="Models\Infectado.cs" />
     <Compile Include="Models\Monitoramento.cs" />
     <Compile Include="Models\Parametros.cs" />
     <Compile Include="Program.cs" />
